@@ -3,11 +3,10 @@
 namespace Tmarois\LaravelCodeTruncator\Services;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Str;
 
 class CodeTruncatorService
 {
-    // protected int $maxTokens = 128000;
-
     public function truncate(array $paths): array
     {
         $allCode = '';
@@ -26,7 +25,10 @@ class CodeTruncatorService
                 $content = File::get($file->getRealPath());
                 $summary = $this->summarize($content);
 
-                $allCode .= "\n\n/** FILE: {$file->getRelativePathname()} **/\n\n" . $summary;
+                $absolutePath = $file->getRealPath();
+                $relativePath = Str::after($absolutePath, base_path() . DIRECTORY_SEPARATOR);
+
+                $allCode .= "\n\n/** FILE: {$relativePath} **/\n\n" . $summary;
 
                 $tokens = $this->countTokens($summary);
                 $tokensUsed += $tokens;

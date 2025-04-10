@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\File;
 
 class CodeTruncatorService
 {
-    protected int $maxTokens = 128000;
+    // protected int $maxTokens = 128000;
 
     public function truncate(array $paths): array
     {
